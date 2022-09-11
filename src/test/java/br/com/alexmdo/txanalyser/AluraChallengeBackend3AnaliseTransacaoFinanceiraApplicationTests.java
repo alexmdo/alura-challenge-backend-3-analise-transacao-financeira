@@ -1,4 +1,4 @@
-package br.com.alexmdo.txanalyser.alurachallengebackend3analisetransacaofinanceira;
+package br.com.alexmdo.txanalyser;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
