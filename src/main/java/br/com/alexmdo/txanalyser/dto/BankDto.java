@@ -8,10 +8,10 @@ import javax.validation.constraints.NotBlank;
 public class BankDto {
 
     @NotBlank
-    private final String sourceBank;
+    private final String bank;
     @NotBlank
-    private final String sourceAgency;
+    private final String agency;
     @NotBlank
-    private final String sourceAccount;
+    private final String account;
 
 }

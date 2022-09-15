@@ -2,10 +2,13 @@ package br.com.alexmdo.txanalyser.service;
 
 import br.com.alexmdo.txanalyser.dto.BankDto;
 import br.com.alexmdo.txanalyser.dto.TransactionDto;
+import br.com.alexmdo.txanalyser.model.Transaction;
+import br.com.alexmdo.txanalyser.repository.TransactionRepository;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +33,14 @@ public class TransactionService {
 
     private final Validator validator;
 
-    public TransactionService(Validator validator) {
+    private final TransactionRepository transactionRepository;
+
+    public TransactionService(Validator validator, TransactionRepository transactionRepository) {
         this.validator = validator;
+        this.transactionRepository = transactionRepository;
     }
 
-    public List<TransactionDto> readFromFile(InputStream inputStream) throws IOException {
+    public List<TransactionDto> readFromFileAndValidate(InputStream inputStream) throws IOException {
         CSVParser csvParser = new CSVParserBuilder()
                 .withSeparator(',')
                 .withIgnoreQuotations(true)
@@ -60,12 +66,20 @@ public class TransactionService {
                 }
             }
 
+            if (transactionDtos.isEmpty()) {
+                throw new IllegalArgumentException("CSV file is empty");
+            }
+
             return transactionDtos;
         }
     }
 
+    public List<? extends Transaction> saveAll(Iterable<? extends Transaction> transactions) {
+        return transactionRepository.saveAll(transactions);
+    }
+
     private boolean hasNoError(TransactionDto transactionDto) {
-        return !validator.validate(transactionDto).isEmpty();
+        return validator.validate(transactionDto).isEmpty();
     }
 
     private boolean isSameDate(LocalDateTime baseDate, TransactionDto transactionDto) {

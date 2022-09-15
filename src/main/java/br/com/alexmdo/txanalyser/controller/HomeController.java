@@ -1,7 +1,7 @@
 package br.com.alexmdo.txanalyser.controller;
 
-import br.com.alexmdo.txanalyser.service.TransactionService;
 import br.com.alexmdo.txanalyser.dto.TransactionDto;
+import br.com.alexmdo.txanalyser.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,13 @@ public class HomeController {
         System.out.println("File name: " + file.getName());
         System.out.println("File length: " + file.getSize() / (1024 * 1024) + " Mb");
 
-        List<TransactionDto> transactionDtos = transactionService.readFromFile(file.getInputStream());
+        try {
+            List<TransactionDto> transactions = transactionService.readFromFileAndValidate(file.getInputStream());
+            transactionService.saveAll(TransactionDto.toModel(transactions));
+        } catch (IllegalArgumentException e) {
+            //TODO handle correcty in view layer!
+            throw e;
+        }
 
         return "home";
     }
