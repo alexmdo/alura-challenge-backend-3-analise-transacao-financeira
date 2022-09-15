@@ -1,7 +1,7 @@
 package br.com.alexmdo.txanalyser.controller;
 
-import br.com.alexmdo.txanalyser.TransactionService;
-import br.com.alexmdo.txanalyser.model.Transaction;
+import br.com.alexmdo.txanalyser.service.TransactionService;
+import br.com.alexmdo.txanalyser.dto.TransactionDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,7 @@ public class HomeController {
         System.out.println("File name: " + file.getName());
         System.out.println("File length: " + file.getSize() / (1024 * 1024) + " Mb");
 
-        List<Transaction> transactions = transactionService.readFromFile(file.getInputStream());
+        List<TransactionDto> transactionDtos = transactionService.readFromFile(file.getInputStream());
 
         return "home";
     }
