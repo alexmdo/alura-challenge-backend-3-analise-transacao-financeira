@@ -8,7 +8,6 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.opencsv.exceptions.CsvException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -66,11 +65,23 @@ public class TransactionService {
                 }
             }
 
-            if (transactionDtos.isEmpty()) {
-                throw new IllegalArgumentException("CSV file is empty");
-            }
+            checkIfCsvIsEmpty(transactionDtos);
+            checkIfCsvWasAlreadyUploaded(baseDate);
 
             return transactionDtos;
+        }
+    }
+
+    private void checkIfCsvIsEmpty(List<TransactionDto> transactionDtos) {
+        if (transactionDtos.isEmpty()) {
+            throw new IllegalArgumentException("CSV file is empty");
+        }
+    }
+
+    private void checkIfCsvWasAlreadyUploaded(LocalDateTime baseDate) {
+        List<Transaction> transactionByTransactionDate = transactionRepository.findByTransactionDate(baseDate);
+        if (!transactionByTransactionDate.isEmpty()) {
+            throw new IllegalArgumentException("Upload already done by given date");
         }
     }
 
