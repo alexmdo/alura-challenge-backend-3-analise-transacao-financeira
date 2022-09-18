@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +26,14 @@ public class TransactionImported {
 
     private LocalDate transactionDate;
     private LocalDateTime importDate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "transactions_transactions_imported",
+            joinColumns = @JoinColumn(name = "transaction_imported_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
+    private List<Transaction> transactions = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

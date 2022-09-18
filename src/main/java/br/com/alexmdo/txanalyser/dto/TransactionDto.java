@@ -32,7 +32,8 @@ public class TransactionDto {
                 dto.getDestinationBank().getAgency(),
                 dto.getDestinationBank().getAccount(),
                 dto.getAmount(),
-                dto.transactionDate
+                dto.transactionDate,
+                null
         )).collect(Collectors.toList());
     }
 }

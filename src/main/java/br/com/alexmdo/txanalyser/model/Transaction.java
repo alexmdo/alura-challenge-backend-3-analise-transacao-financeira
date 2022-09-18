@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -30,6 +32,9 @@ public class Transaction {
     private String destinationAccount;
     private BigDecimal amount;
     private LocalDateTime transactionDate;
+
+    @ManyToMany(mappedBy = "transactions")
+    private List<TransactionImported> transactionsImported = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

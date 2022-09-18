@@ -2,6 +2,7 @@ package br.com.alexmdo.txanalyser.controller;
 
 import br.com.alexmdo.txanalyser.dto.TransactionDto;
 import br.com.alexmdo.txanalyser.dto.TransactionImportedDto;
+import br.com.alexmdo.txanalyser.model.Transaction;
 import br.com.alexmdo.txanalyser.model.TransactionImported;
 import br.com.alexmdo.txanalyser.service.TransactionImportedService;
 import br.com.alexmdo.txanalyser.service.TransactionService;
@@ -42,9 +43,9 @@ public class HomeController {
         System.out.println("File length: " + file.getSize() / (1024 * 1024) + " Mb");
 
         try {
-            List<TransactionDto> transactions = transactionService.readFromFileAndValidate(file.getInputStream());
-            transactionService.saveAll(TransactionDto.toModel(transactions));
-            transactionImportedService.save(new TransactionImported(null, getTransactionDate(transactions), LocalDateTime.now()));
+            List<TransactionDto> transactionsDto = transactionService.readFromFileAndValidate(file.getInputStream());
+            List<? extends Transaction> transactions = transactionService.saveAll(TransactionDto.toModel(transactionsDto));
+            transactionImportedService.save(new TransactionImported(null, getTransactionDate(transactionsDto), LocalDateTime.now(), (List<Transaction>) transactions));
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "home";
