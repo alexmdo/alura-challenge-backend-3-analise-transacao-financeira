@@ -27,23 +27,22 @@
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>Data Transações</th>
-                        <th>Data Importação</th>
-                    </tr>
+                <tr>
+                    <th>Data Transações</th>
+                    <th>Data Importação</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="import : ${importsDone}">
-                        <td th:text="${#temporals.format(import.transactionDate, 'dd/MM/yyyy')}">05/01/2022</td>
-                        <td th:text="${#temporals.format(import.importDate, 'dd/MM/yyyy - hh:mm:ss')}">05/01/2022 - 16:22:19</td>
-                    </tr>
+                <tr th:each="import : ${importsDone}">
+                    <td th:text="${#temporals.format(import.transactionDate, 'dd/MM/yyyy')}">05/01/2022</td>
+                    <td th:text="${#temporals.format(import.importDate, 'dd/MM/yyyy - hh:mm:ss')}">05/01/2022 -
+                        16:22:19
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"></script>
 </body>
 </html>
