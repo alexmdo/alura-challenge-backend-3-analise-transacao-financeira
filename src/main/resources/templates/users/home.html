@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{base :: head}"></head>
+<body>
+<div th:replace="~{base :: logo}"></div>
+<div class="container">
+    <div th:replace="~{base :: titulo('Cadastrar usuário')}"></div>
+
+    <div class="card">
+        <h5 class="card-header">
+            Novo usuário
+        </h5>
+        <form class="card-body" method="post" th:action="@{/users/new}" th:object="${newUserForm}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input th:field="*{name}" th:errorclass="is-invalid" type="text" class="form-control" id="name" placeholder="nome do usuário">
+                <div class="invalid-feedback" th:errors="*{name}">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input th:field="*{email}" th:errorclass="is-invalid" type="email" class="form-control" id="email" placeholder="endereço de email">
+                <div class="invalid-feedback" th:errors="*{email}">
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Cadastrar</button>
+        </form>
+    </div>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5>Usuários cadastrados</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-warning">Editar</button>
+                            <button type="button" class="btn btn-danger">Remover</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
