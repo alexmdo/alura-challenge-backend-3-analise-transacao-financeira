@@ -14,5 +14,5 @@ create table authorities
 
 create unique index ix_auth_username on authorities (username, authority);
 
-insert into users values ('admin@email.com.br', '$2a$10$es2i3xEUQJEEhuY6cOzw1u3OHEJL/oMzj4CEKacYSTQ7qvt5U1Hhq', true);
+insert into users values ('admin@email.com.br', '$2a$10$16/JIo7AReDkmW34N6yjxOH/HxgY503jxCS38ZfEGF70XzOoX7Hhy', true);
 insert into authorities values ('admin@email.com.br', 'ROLE_ADM');
