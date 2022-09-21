@@ -1,6 +1,7 @@
 package br.com.alexmdo.txanalyser.model;
 
 import br.com.alexmdo.txanalyser.controller.dto.UserDto;
+import br.com.alexmdo.txanalyser.controller.form.NewUserForm;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,5 +42,9 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(username);
+    }
+
+    public NewUserForm toForm() {
+        return new NewUserForm(this.getName(), this.getUsername());
     }
 }

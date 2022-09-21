@@ -6,6 +6,10 @@
 <div class="container">
     <div th:replace="~{base :: titulo('Cadastrar usuário')}"></div>
 
+    <div th:if="${error != null}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
     <div class="card">
         <h5 class="card-header">
             Novo usuário
@@ -47,8 +51,8 @@
                     <td th:text="${user.email}"></td>
                     <td>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-warning">Editar</button>
-                            <button type="button" class="btn btn-danger">Remover</button>
+                            <a th:href="@{/users/edit/{id}(id = ${user.id})}" class="btn btn-warning">Editar</a>
+                            <a th:href="@{/users/delete?id=${user.id}}" class="btn btn-danger">Remover</a>
                         </div>
                     </td>
                 </tr>
