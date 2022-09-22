@@ -5,10 +5,10 @@ import br.com.alexmdo.txanalyser.model.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public record NewUserForm(@NotBlank String name, @NotBlank @Email String email) {
+public record NewUserForm(Long id, @NotBlank String name, @NotBlank @Email String email) {
 
     public User toModel() {
-        return new User(null, this.email, null, true, this.name);
+        return new User(id, this.email, null, true, this.name);
     }
 
 }

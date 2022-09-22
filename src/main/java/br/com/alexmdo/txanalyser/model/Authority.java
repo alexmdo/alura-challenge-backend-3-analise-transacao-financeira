@@ -1,9 +1,6 @@
 package br.com.alexmdo.txanalyser.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,6 +14,7 @@ import java.util.Objects;
 public class Authority {
 
     @Id
+    @Setter
     private String username;
     private String authority;
 

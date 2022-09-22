@@ -22,21 +22,26 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String goToHome(Model model) {
-        model.addAttribute("newUserForm", new NewUserForm(null, null));
+    public String goToHome(NewUserForm newUserForm, Model model) {
         model.addAttribute("users", User.toDto(userService.findAllExceptDefaultUserAndItSelf()));
+
         return "users/home";
     }
 
-    @PostMapping("/new")
-    public String newUser(@Valid NewUserForm newUserForm, BindingResult bindingResult, Model model) {
+    @PostMapping("/save")
+    public String saveUser(@Valid NewUserForm newUserForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "/users/home";
         }
 
         try {
             User user = newUserForm.toModel();
-            userService.save(user);
+
+            if (user.getId() == null) {
+                userService.save(user);
+            } else {
+                userService.update(user);
+            }
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "/users/home";
@@ -47,14 +52,17 @@ public class UserController {
 
     @GetMapping( "/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
-        //TODO finalizar implementação da edição
-        Optional<User> userOpt = userService.findById(id);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            model.addAttribute("newUserForm", user.toForm());
-        }
-        model.addAttribute("users", User.toDto(userService.findAllExceptDefaultUserAndItSelf()));
+        User user = userService.findById(id).orElseThrow(() -> new IllegalArgumentException("No user found!"));
+        model.addAttribute("newUserForm", user.toForm());
+
         return "users/home";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+
+        return "redirect:/users/home";
     }
 
 }

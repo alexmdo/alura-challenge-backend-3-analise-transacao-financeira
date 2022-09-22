@@ -21,10 +21,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    @Setter
     private String username;
     @Setter
     private String password;
     private Boolean enabled;
+    @Setter
     private String name;
 
     public static List<UserDto> toDto(List<User> users) {
@@ -45,6 +47,6 @@ public class User {
     }
 
     public NewUserForm toForm() {
-        return new NewUserForm(this.getName(), this.getUsername());
+        return new NewUserForm(this.id, this.getName(), this.getUsername());
     }
 }

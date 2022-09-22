@@ -14,7 +14,8 @@
         <h5 class="card-header">
             Novo usuário
         </h5>
-        <form class="card-body" method="post" th:action="@{/users/new}" th:object="${newUserForm}">
+        <form class="card-body" method="post" th:action="@{/users/save}" th:object="${newUserForm}">
+            <input type="hidden" th:field="*{id}">
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
                 <input th:field="*{name}" th:errorclass="is-invalid" type="text" class="form-control" id="name" placeholder="nome do usuário">
@@ -52,7 +53,7 @@
                     <td>
                         <div class="btn-group" role="group">
                             <a th:href="@{/users/edit/{id}(id = ${user.id})}" class="btn btn-warning">Editar</a>
-                            <a th:href="@{/users/delete?id=${user.id}}" class="btn btn-danger">Remover</a>
+                            <a th:href="@{/users/delete/{id}(id = ${user.id})}" class="btn btn-danger">Remover</a>
                         </div>
                     </td>
                 </tr>

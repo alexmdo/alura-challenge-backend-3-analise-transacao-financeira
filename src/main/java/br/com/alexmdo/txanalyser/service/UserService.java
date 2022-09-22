@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -23,14 +24,29 @@ public class UserService {
         this.authorityRepository = authorityRepository;
     }
 
-    public User save(User user) {
+    @Transactional
+    public void save(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalArgumentException("User already registered!");
         }
 
         generateRandomPassword(user);
         authorityRepository.save(new Authority(user.getUsername(), "ROLE_ADM"));
-        return userRepository.save(user);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void update(User user) {
+        User userFound = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("User not found!"));
+
+        userFound.setName(user.getName());
+
+        if (!user.getUsername().equals(userFound.getUsername())) {
+            authorityRepository.deleteById(userFound.getUsername());
+            authorityRepository.save(new Authority(user.getUsername(), "ROLE_ADM"));
+
+            userFound.setUsername(user.getUsername());
+        }
     }
 
     private void generateRandomPassword(User user) {
@@ -40,9 +56,7 @@ public class UserService {
     }
 
     private String getSixRandomNumber() {
-        Random rnd = new Random();
-        String randomPassword = String.format("%06d", rnd.nextInt(999999));
-        return randomPassword;
+        return String.format("%06d", new Random().nextInt(999999));
     }
 
     public List<User> findAllExceptDefaultUserAndItSelf() {
@@ -58,5 +72,13 @@ public class UserService {
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found!"));
+
+        authorityRepository.deleteById(user.getUsername());
+        userRepository.delete(user);
     }
 }
