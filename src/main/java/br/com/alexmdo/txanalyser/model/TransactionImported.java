@@ -1,9 +1,6 @@
 package br.com.alexmdo.txanalyser.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,7 +14,6 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class TransactionImported {
 
     @Id
@@ -35,6 +31,11 @@ public class TransactionImported {
     )
     private List<Transaction> transactions = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @Setter
+    private User user;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,4 +49,12 @@ public class TransactionImported {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "TransactionImported{" +
+                "id=" + id +
+                ", transactionDate=" + transactionDate +
+                ", importDate=" + importDate +
+                '}';
+    }
 }

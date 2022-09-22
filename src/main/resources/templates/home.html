@@ -30,14 +30,14 @@
                 <tr>
                     <th>Data Transações</th>
                     <th>Data Importação</th>
+                    <th>Usuário</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="import : ${importsDone}">
-                    <td th:text="${#temporals.format(import.transactionDate, 'dd/MM/yyyy')}">05/01/2022</td>
-                    <td th:text="${#temporals.format(import.importDate, 'dd/MM/yyyy - hh:mm:ss')}">05/01/2022 -
-                        16:22:19
-                    </td>
+                    <td th:text="${#temporals.format(import.transactionDate, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(import.importDate, 'dd/MM/yyyy - hh:mm:ss')}"></td>
+                    <td th:text="${import.name}"></td>
                 </tr>
                 </tbody>
             </table>

@@ -45,7 +45,7 @@ public class HomeController {
         try {
             List<TransactionDto> transactionsDto = transactionService.readFromFileAndValidate(file.getInputStream());
             List<? extends Transaction> transactions = transactionService.saveAll(TransactionDto.toModel(transactionsDto));
-            transactionImportedService.save(new TransactionImported(null, getTransactionDate(transactionsDto), LocalDateTime.now(), (List<Transaction>) transactions));
+            transactionImportedService.save(new TransactionImported(null, getTransactionDate(transactionsDto), LocalDateTime.now(), (List<Transaction>) transactions, null));
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "home";
