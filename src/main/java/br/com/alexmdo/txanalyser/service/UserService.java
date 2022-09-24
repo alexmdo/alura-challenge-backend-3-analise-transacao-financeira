@@ -59,10 +59,10 @@ public class UserService {
         return String.format("%06d", new Random().nextInt(999999));
     }
 
-    public List<User> findAllExceptDefaultUserAndItSelf() {
+    public List<User> findAllExceptDefaultOrDisabledUserAndItSelf() {
         List<User> users = userRepository.findAll();
         String loggedUsername = getLoggedUsername();
-        users.removeIf(user -> user.getUsername().equals("admin@email.com.br") || loggedUsername.equals(user.getUsername()));
+        users.removeIf(user -> user.getUsername().equals("admin@email.com.br") || loggedUsername.equals(user.getUsername()) || !user.getEnabled());
         return users;
     }
 
@@ -77,8 +77,6 @@ public class UserService {
     @Transactional
     public void delete(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found!"));
-
-        authorityRepository.deleteById(user.getUsername());
-        userRepository.delete(user);
+        user.setEnabled(false);
     }
 }

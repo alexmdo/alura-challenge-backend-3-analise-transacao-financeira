@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -23,7 +22,7 @@ public class UserController {
 
     @GetMapping("/home")
     public String goToHome(NewUserForm newUserForm, Model model) {
-        model.addAttribute("users", User.toDto(userService.findAllExceptDefaultUserAndItSelf()));
+        model.addAttribute("users", User.toDto(userService.findAllExceptDefaultOrDisabledUserAndItSelf()));
 
         return "users/home";
     }

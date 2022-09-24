@@ -25,6 +25,7 @@ public class User {
     private String username;
     @Setter
     private String password;
+    @Setter
     private Boolean enabled;
     @Setter
     private String name;
