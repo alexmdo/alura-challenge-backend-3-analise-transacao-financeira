@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record TransactionImportedDto(LocalDate transactionDate, LocalDateTime importDate, String name) {
+public record TransactionImportedDto(Long id, LocalDate transactionDate, LocalDateTime importDate, String name) {
 
     public static List<TransactionImportedDto> toDto(List<TransactionImported> transactionImporteds) {
         return transactionImporteds.stream().map(entity -> new TransactionImportedDto(
+                entity.getId(),
                 entity.getTransactionDate(),
                 entity.getImportDate(),
                 entity.getUser().getName()

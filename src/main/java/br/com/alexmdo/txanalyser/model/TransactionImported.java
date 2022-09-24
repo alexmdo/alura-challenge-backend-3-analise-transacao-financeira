@@ -1,5 +1,8 @@
 package br.com.alexmdo.txanalyser.model;
 
+import br.com.alexmdo.txanalyser.dto.BankDto;
+import br.com.alexmdo.txanalyser.dto.TransactionDto;
+import br.com.alexmdo.txanalyser.dto.TransactionImportedDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "transactions_imported")
@@ -56,5 +60,17 @@ public class TransactionImported {
                 ", transactionDate=" + transactionDate +
                 ", importDate=" + importDate +
                 '}';
+    }
+
+    public List<TransactionDto> toTransactionDto() {
+        return this.transactions.stream().map(tx -> new TransactionDto(
+                new BankDto(tx.getSourceBank(), tx.getSourceAgency(), tx.getSourceAccount()),
+                new BankDto(tx.getDestinationBank(), tx.getDestinationAgency(), tx.getDestinationAccount()),
+                tx.getAmount(),
+                tx.getTransactionDate())).collect(Collectors.toList());
+    }
+
+    public TransactionImportedDto toTransactionImportedDto() {
+        return new TransactionImportedDto(this.id, this.transactionDate, this.importDate, this.getUser().getName());
     }
 }

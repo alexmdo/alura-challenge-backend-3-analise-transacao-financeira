@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.domain.Sort.by;
@@ -34,5 +35,9 @@ public class TransactionImportedService {
         User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new IllegalArgumentException("User not found"));
         entity.setUser(user);
         transactionImportedRepository.save(entity);
+    }
+
+    public Optional<TransactionImported> findById(Long id) {
+        return transactionImportedRepository.findById(id);
     }
 }
