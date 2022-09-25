@@ -44,32 +44,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Banco do Brasil</td>
-                        <td>0001</td>
-                        <td>0001-1</td>
-                        <td>Banco Santander</td>
-                        <td>0001</td>
-                        <td>0001-1</td>
-                        <td>R$ 850.000,00</td>
-                    </tr>
-                    <tr>
-                        <td>Banco Bradesco</td>
-                        <td>0001</td>
-                        <td>0001-1</td>
-                        <td>Banco Itaú</td>
-                        <td>0001</td>
-                        <td>0001-1</td>
-                        <td>R$ 644.918,31</td>
-                    </tr>
-                    <tr>
-                        <td>Banco Santander</td>
-                        <td>0001</td>
-                        <td>0001-1</td>
-                        <td>Nubank</td>
-                        <td>0001</td>
-                        <td>0001-1</td>
-                        <td>R$ 500.000,00</td>
+                    <tr th:each="st : ${suspectTransactions}">
+                        <td th:text="${st.sourceBank.bank}"></td>
+                        <td th:text="${st.sourceBank.agency}"></td>
+                        <td th:text="${st.sourceBank.account}"></td>
+                        <td th:text="${st.destionationBank.bank}"></td>
+                        <td th:text="${st.destionationBank.agency}"></td>
+                        <td th:text="${st.destionationBank.account}"></td>
+                        <td th:text="${'R$ ' + #numbers.formatDecimal(st.totalAmount,3,'POINT',2,'COMMA')}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -92,26 +74,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Banco do Brasil</td>
-                    <td>0001</td>
-                    <td>0001-1</td>
-                    <td>R$ 3.138.219,12</td>
-                    <td>Entrada</td>
-                </tr>
-                <tr>
-                    <td>Banco do Brasil</td>
-                    <td>0001</td>
-                    <td>0001-1</td>
-                    <td>R$ 1.098.614,19</td>
-                    <td>Saída</td>
-                </tr>
-                <tr>
-                    <td>Banco Bradesco</td>
-                    <td>0001</td>
-                    <td>0001-1</td>
-                    <td>R$ 1.012.490,00</td>
-                    <td>Saída</td>
+                <tr th:each="sa : ${suspectAccounts}">
+                    <td th:text="${sa.bank.bank}"></td>
+                    <td th:text="${sa.bank.agency}"></td>
+                    <td th:text="${sa.bank.account}"></td>
+                    <td th:text="${'R$ ' + #numbers.formatDecimal(sa.amount,3,'POINT',2,'COMMA')}"></td>
+                    <td th:text="${sa.movimentType.description}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -133,23 +101,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Banco do Brasil</td>
-                    <td>0001</td>
-                    <td>R$ 12.419.124.125,87</td>
-                    <td>Saída</td>
-                </tr>
-                <tr>
-                    <td>Banco do Brasil</td>
-                    <td>0005</td>
-                    <td>R$ 4.198.015.987,33</td>
-                    <td>Saída</td>
-                </tr>
-                <tr>
-                    <td>Banco Bradesco</td>
-                    <td>0012</td>
-                    <td>R$ 1.912.484.319,11</td>
-                    <td>Entrada</td>
+                <tr th:each="sa : ${suspectAgencies}">
+                    <td th:text="${sa.bank.bank}"></td>
+                    <td th:text="${sa.bank.agency}"></td>
+                    <td th:text="${'R$ ' + #numbers.formatDecimal(sa.amount,3,'POINT',2,'COMMA')}"></td>
+                    <td th:text="${sa.movimentType.description}"></td>
                 </tr>
                 </tbody>
             </table>

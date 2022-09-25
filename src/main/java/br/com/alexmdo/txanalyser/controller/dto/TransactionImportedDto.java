@@ -1,4 +1,4 @@
-package br.com.alexmdo.txanalyser.dto;
+package br.com.alexmdo.txanalyser.controller.dto;
 
 import br.com.alexmdo.txanalyser.model.TransactionImported;
 

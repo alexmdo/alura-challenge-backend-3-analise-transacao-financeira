@@ -1,7 +1,7 @@
 package br.com.alexmdo.txanalyser.service;
 
-import br.com.alexmdo.txanalyser.dto.BankDto;
-import br.com.alexmdo.txanalyser.dto.TransactionDto;
+import br.com.alexmdo.txanalyser.controller.dto.BankDto;
+import br.com.alexmdo.txanalyser.controller.dto.TransactionDto;
 import br.com.alexmdo.txanalyser.model.Transaction;
 import br.com.alexmdo.txanalyser.repository.TransactionRepository;
 import com.opencsv.CSVParser;

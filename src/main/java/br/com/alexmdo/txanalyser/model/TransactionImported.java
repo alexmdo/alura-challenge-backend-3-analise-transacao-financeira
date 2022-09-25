@@ -1,8 +1,8 @@
 package br.com.alexmdo.txanalyser.model;
 
-import br.com.alexmdo.txanalyser.dto.BankDto;
-import br.com.alexmdo.txanalyser.dto.TransactionDto;
-import br.com.alexmdo.txanalyser.dto.TransactionImportedDto;
+import br.com.alexmdo.txanalyser.controller.dto.BankDto;
+import br.com.alexmdo.txanalyser.controller.dto.TransactionDto;
+import br.com.alexmdo.txanalyser.controller.dto.TransactionImportedDto;
 import lombok.*;
 
 import javax.persistence.*;
