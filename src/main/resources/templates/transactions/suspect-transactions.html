@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{base :: head}"></head>
+<body>
+<div th:replace="~{base :: logo}"></div>
+<div class="container">
+    <div th:replace="~{base :: titulo('Análise de transações suspeitas')}"></div>
+
+    <div th:if="${error != null}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">
+            Selecione o mês para analisar as transações
+        </h5>
+        <form class="card-body" method="post" th:action="@{/transactions/analyse}">
+            <div class="mb-3">
+                <input type="date" class="form-control"  >
+            </div>
+            <button class="btn btn-primary" type="submit">Realizar análise</button>
+        </form>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5>Transações suspeitas</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Origem</th>
+                        <th colspan="3" class="text-center">Destino</th>
+                        <th rowspan="2" class="text-center align-middle">Valor</th>
+                    </tr>
+                    <tr>
+                        <th>Banco</th>
+                        <th>Agência</th>
+                        <th>Conta</th>
+                        <th>Banco</th>
+                        <th>Agência</th>
+                        <th>Conta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Banco do Brasil</td>
+                        <td>0001</td>
+                        <td>0001-1</td>
+                        <td>Banco Santander</td>
+                        <td>0001</td>
+                        <td>0001-1</td>
+                        <td>R$ 850.000,00</td>
+                    </tr>
+                    <tr>
+                        <td>Banco Bradesco</td>
+                        <td>0001</td>
+                        <td>0001-1</td>
+                        <td>Banco Itaú</td>
+                        <td>0001</td>
+                        <td>0001-1</td>
+                        <td>R$ 644.918,31</td>
+                    </tr>
+                    <tr>
+                        <td>Banco Santander</td>
+                        <td>0001</td>
+                        <td>0001-1</td>
+                        <td>Nubank</td>
+                        <td>0001</td>
+                        <td>0001-1</td>
+                        <td>R$ 500.000,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5>Contas suspeitas</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Banco</th>
+                    <th>Agência</th>
+                    <th>Conta</th>
+                    <th>Valor movimentado</th>
+                    <th>Tipo movimentação</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Banco do Brasil</td>
+                    <td>0001</td>
+                    <td>0001-1</td>
+                    <td>R$ 3.138.219,12</td>
+                    <td>Entrada</td>
+                </tr>
+                <tr>
+                    <td>Banco do Brasil</td>
+                    <td>0001</td>
+                    <td>0001-1</td>
+                    <td>R$ 1.098.614,19</td>
+                    <td>Saída</td>
+                </tr>
+                <tr>
+                    <td>Banco Bradesco</td>
+                    <td>0001</td>
+                    <td>0001-1</td>
+                    <td>R$ 1.012.490,00</td>
+                    <td>Saída</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5>Agências suspeitas</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Banco</th>
+                    <th>Agência</th>
+                    <th>Valor movimentado</th>
+                    <th>Tipo movimentação</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Banco do Brasil</td>
+                    <td>0001</td>
+                    <td>R$ 12.419.124.125,87</td>
+                    <td>Saída</td>
+                </tr>
+                <tr>
+                    <td>Banco do Brasil</td>
+                    <td>0005</td>
+                    <td>R$ 4.198.015.987,33</td>
+                    <td>Saída</td>
+                </tr>
+                <tr>
+                    <td>Banco Bradesco</td>
+                    <td>0012</td>
+                    <td>R$ 1.912.484.319,11</td>
+                    <td>Entrada</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -31,7 +31,8 @@
     </div>
     <div sec:authorize="isAuthenticated()">
         <nav class="nav">
-            <a class="nav-link" th:href="@{/home}">Home</a>
+            <a class="nav-link" th:href="@{/home}">Importar transações</a>
+            <a class="nav-link" th:href="@{/transactions/suspect}">Análise de transações suspeitas</a>
             <a class="nav-link" th:href="@{/users/home}">Usuários</a>
         </nav>
     </div>

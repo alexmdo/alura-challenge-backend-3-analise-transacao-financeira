@@ -55,6 +55,16 @@ public class TransactionController {
         return "transactions/details";
     }
 
+    @GetMapping("/suspect")
+    public String goToSuspectTransactions() {
+        return "transactions/suspect-transactions";
+    }
+
+    @PostMapping("analyse")
+    public String analyseSuspectTransactions() {
+        return "transactions/suspect-transactions";
+    }
+
     private LocalDate getTransactionDate(List<TransactionDto> transactions) {
         return transactions.get(0).getTransactionDate().toLocalDate();
     }
