@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/save")
     public String saveUser(@Valid NewUserForm newUserForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "/users/home";
+            return "users/home";
         }
 
         try {
@@ -43,7 +43,7 @@ public class UserController {
             }
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "/users/home";
+            return "users/home";
         }
 
         return "redirect:/users/home";

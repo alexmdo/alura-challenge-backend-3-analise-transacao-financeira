@@ -12,7 +12,7 @@
         <h5 class="card-header">
             Importar transações
         </h5>
-        <form class="card-body" method="post" th:action="@{/home/upload}" enctype="multipart/form-data">
+        <form class="card-body" method="post" th:action="@{/transactions/upload}" enctype="multipart/form-data">
             <div class="mb-3">
                 <input class="form-control" type="file" name="file" accept="text/csv">
                 <small>Selecione o arquivo para realizar o upload</small>

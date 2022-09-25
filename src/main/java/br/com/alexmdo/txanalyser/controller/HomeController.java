@@ -22,40 +22,16 @@ import java.util.List;
 @RequestMapping("/home")
 public class HomeController {
 
-    private final TransactionService transactionService;
     private final TransactionImportedService transactionImportedService;
 
-    public HomeController(TransactionService transactionService, TransactionImportedService transactionImportedService) {
-        this.transactionService = transactionService;
+    public HomeController(TransactionImportedService transactionImportedService) {
         this.transactionImportedService = transactionImportedService;
     }
-
 
     @GetMapping
     public String toHome(Model model) {
         model.addAttribute("importsDone", TransactionImportedDto.toDto(transactionImportedService.findAllAndSortByTransactionDate()));
-        return "home";
-    }
-
-    @PostMapping("/upload")
-    public String onUpload(Model model, MultipartFile file) throws IOException {
-        System.out.println("File name: " + file.getName());
-        System.out.println("File length: " + file.getSize() / (1024 * 1024) + " Mb");
-
-        try {
-            List<TransactionDto> transactionsDto = transactionService.readFromFileAndValidate(file.getInputStream());
-            List<? extends Transaction> transactions = transactionService.saveAll(TransactionDto.toModel(transactionsDto));
-            transactionImportedService.save(new TransactionImported(null, getTransactionDate(transactionsDto), LocalDateTime.now(), (List<Transaction>) transactions, null));
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "home";
-        }
-
-        return "redirect:/home";
-    }
-
-    private LocalDate getTransactionDate(List<TransactionDto> transactions) {
-        return transactions.get(0).getTransactionDate().toLocalDate();
+        return "transactions/home";
     }
 
 }
