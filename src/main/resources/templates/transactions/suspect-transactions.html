@@ -14,9 +14,9 @@
         <h5 class="card-header">
             Selecione o mês para analisar as transações
         </h5>
-        <form class="card-body" method="post" th:action="@{/transactions/analyse}">
+        <form class="card-body" method="post" th:action="@{/transactions/analyse}" th:object="${suspectTransactionForm}">
             <div class="mb-3">
-                <input type="date" class="form-control"  >
+                <input required type="date" class="form-control" th:field="*{date}">
             </div>
             <button class="btn btn-primary" type="submit">Realizar análise</button>
         </form>

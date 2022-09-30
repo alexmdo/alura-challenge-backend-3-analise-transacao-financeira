@@ -3,6 +3,8 @@ package br.com.alexmdo.txanalyser.service;
 import br.com.alexmdo.txanalyser.controller.dto.BankDto;
 import br.com.alexmdo.txanalyser.controller.dto.TransactionDto;
 import br.com.alexmdo.txanalyser.model.Transaction;
+import br.com.alexmdo.txanalyser.model.dto.SuspectAccountDto;
+import br.com.alexmdo.txanalyser.model.dto.SuspectAgencyDto;
 import br.com.alexmdo.txanalyser.repository.TransactionRepository;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -17,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -88,6 +91,31 @@ public class TransactionService {
     public List<? extends Transaction> saveAll(Iterable<? extends Transaction> transactions) {
         return transactionRepository.saveAll(transactions);
     }
+
+    public List<Transaction> findByAmountGreaterThanEqual(LocalDate yearMonth, BigDecimal amount) {
+        return transactionRepository.findByAmountGreaterThanEqual(yearMonth.getYear(), yearMonth.getMonthValue(), amount);
+    }
+
+    public List<SuspectAccountDto> findIncomeOrOutcomeSuspectAccountByAmountGreaterThanEqual(LocalDate yearMonth, BigDecimal amount) {
+        List<SuspectAccountDto> incomeSuspectAccountByAmountGreaterThanEqual = transactionRepository.findIncomeSuspectAccountByAmountGreaterThanEqual(yearMonth.getYear(), yearMonth.getMonthValue(), amount);
+        List<SuspectAccountDto> outcomeSuspectAccountByAmountGreaterThanEqual = transactionRepository.findOutcomeSuspectAccountByAmountGreaterThanEqual(yearMonth.getYear(), yearMonth.getMonthValue(), amount);
+
+        ArrayList<SuspectAccountDto> suspectAccountDtos = new ArrayList<>(incomeSuspectAccountByAmountGreaterThanEqual);
+        suspectAccountDtos.addAll(outcomeSuspectAccountByAmountGreaterThanEqual);
+
+        return suspectAccountDtos;
+    }
+
+    public List<SuspectAgencyDto> findIncomeOrOutcomeSuspectAgencyByAmountGreaterThanEqual(LocalDate yearMonth, BigDecimal amount) {
+        List<SuspectAgencyDto> incomeSuspectAgencyByAmountGreaterThanEqual = transactionRepository.findIncomeSuspectAgencyByAmountGreaterThanEqual(yearMonth.getYear(), yearMonth.getMonthValue(), amount);
+        List<SuspectAgencyDto> outcomeSuspectAgencyByAmountGreaterThanEqual = transactionRepository.findOutcomeSuspectAgencyByAmountGreaterThanEqual(yearMonth.getYear(), yearMonth.getMonthValue(), amount);
+
+        ArrayList<SuspectAgencyDto> suspectAgencyDtos = new ArrayList<>(incomeSuspectAgencyByAmountGreaterThanEqual);
+        suspectAgencyDtos.addAll(outcomeSuspectAgencyByAmountGreaterThanEqual);
+
+        return suspectAgencyDtos;
+    }
+
 
     private boolean hasNoError(TransactionDto transactionDto) {
         return validator.validate(transactionDto).isEmpty();

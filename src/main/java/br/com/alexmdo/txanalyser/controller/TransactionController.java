@@ -1,24 +1,28 @@
 package br.com.alexmdo.txanalyser.controller;
 
 import br.com.alexmdo.txanalyser.controller.dto.*;
+import br.com.alexmdo.txanalyser.controller.form.SuspectTransactionForm;
 import br.com.alexmdo.txanalyser.model.Transaction;
 import br.com.alexmdo.txanalyser.model.TransactionImported;
+import br.com.alexmdo.txanalyser.model.dto.SuspectAccountDto;
 import br.com.alexmdo.txanalyser.service.TransactionImportedService;
 import br.com.alexmdo.txanalyser.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/transactions")
@@ -58,63 +62,37 @@ public class TransactionController {
     }
 
     @GetMapping("/suspect")
-    public String goToSuspectTransactions() {
+    public String goToSuspectTransactions(SuspectTransactionForm suspectTransactionForm) {
         return "transactions/suspect-transactions";
     }
 
     @PostMapping("analyse")
-    public String analyseSuspectTransactions(Model model) {
-        SuspectTransactionDto suspectTransactionDto1 = new SuspectTransactionDto(
-                new BankDto("Banco do Brasil", "0001", "0001-1"),
-                new BankDto("Banco Santander", "0001", "0001-1"),
-                new BigDecimal("850000.00")
-        );
-        SuspectTransactionDto suspectTransactionDto2 = new SuspectTransactionDto(
-                new BankDto("Banco Bradesco", "0001", "0001-1"),
-                new BankDto("Banco Itaú", "0001", "0001-1"),
-                new BigDecimal("644918.31")
-        );
-        SuspectTransactionDto suspectTransactionDto3 = new SuspectTransactionDto(
-                new BankDto("Banco Santander", "0001", "0001-1"),
-                new BankDto("Nubank", "0001", "0001-1"),
-                new BigDecimal("500000.00")
-        );
+    public String analyseSuspectTransactions(@Valid SuspectTransactionForm suspectTransactionForm, Model model, BindingResult result) {
+        if (result.hasErrors()) {
+            model.addAttribute("error", result.getFieldError().getDefaultMessage());
+            return "transactions/suspect-transactions";
+        }
 
-        SuspectAccountDto suspectAccountDto1 = new SuspectAccountDto(
-                new BankDto("Banco do Brasil", "0001", "0001-1"),
-                new BigDecimal("3138219.12"),
-                MovimentTypeDto.ENTRADA
-        );
-        SuspectAccountDto suspectAccountDto2 = new SuspectAccountDto(
-                new BankDto("Banco do Brasil", "0001", "0001-1"),
-                new BigDecimal("1098614.19"),
-                MovimentTypeDto.SAIDA
-        );
-        SuspectAccountDto suspectAccountDto3 = new SuspectAccountDto(
-                new BankDto("Banco Bradesco", "0001", "0001-1"),
-                new BigDecimal("1012490.00"),
-                MovimentTypeDto.SAIDA
-        );
+        List<Transaction> transactionsGreaterThanEqual100000 = transactionService.findByAmountGreaterThanEqual(suspectTransactionForm.date(), new BigDecimal("100000.00"));
+        List<SuspectTransactionDto> suspectTransactions = transactionsGreaterThanEqual100000.stream().map(t -> new SuspectTransactionDto(
+                new BankDto(t.getSourceBank(), t.getSourceAgency(), t.getSourceAccount()),
+                new BankDto(t.getDestinationBank(), t.getDestinationAgency(), t.getDestinationAccount()),
+                t.getAmount()
+        )).collect(Collectors.toList());
 
-        SuspectAgencyDto suspectAgency1 = new SuspectAgencyDto(
-                new BankDto("Banco do Brasil", "0001", null),
-                new BigDecimal("12419124125.87"),
-                MovimentTypeDto.SAIDA
-        );
-        SuspectAgencyDto suspectAgency2 = new SuspectAgencyDto(
-                new BankDto("Banco do Brasil", "0005", null),
-                new BigDecimal("4198015987.33"),
-                MovimentTypeDto.SAIDA
-        );
-        SuspectAgencyDto suspectAgency3 = new SuspectAgencyDto(
-                new BankDto("Banco Bradesco", "0012", null),
-                new BigDecimal("1912484319.11"),
-                MovimentTypeDto.ENTRADA
-        );
+        List<SuspectAccountDto> incomeOrOutcomeSuspectAccountByAmountGreaterThanEqual1000000 = transactionService.findIncomeOrOutcomeSuspectAccountByAmountGreaterThanEqual(suspectTransactionForm.date(), new BigDecimal("1000000.00"));
+        List<br.com.alexmdo.txanalyser.controller.dto.SuspectAccountDto> suspectAccountDtos = incomeOrOutcomeSuspectAccountByAmountGreaterThanEqual1000000.stream().map(o -> new br.com.alexmdo.txanalyser.controller.dto.SuspectAccountDto(
+                new BankDto(o.bank(), o.agency(), o.account()),
+                o.amount(),
+                MovimentTypeDto.valueOf(o.movimentType())
+        )).collect(Collectors.toList());
 
-        model.addAttribute("suspectTransactions", Arrays.asList(suspectTransactionDto1, suspectTransactionDto2, suspectTransactionDto2));
-        model.addAttribute("suspectAccounts", Arrays.asList(suspectAccountDto1, suspectAccountDto2, suspectAccountDto3));
-        model.addAttribute("suspectAgencies", Arrays.asList(suspectAgency1, suspectAgency2, suspectAgency3));
+        List<br.com.alexmdo.txanalyser.model.dto.SuspectAgencyDto> incomeOrOutcomeSuspectAgencyByAmountGreaterThanEqual1000000000 = transactionService.findIncomeOrOutcomeSuspectAgencyByAmountGreaterThanEqual(suspectTransactionForm.date(), new BigDecimal("1000000000.00"));
+        List<SuspectAgencyDto> suspectAgenciesDtos = incomeOrOutcomeSuspectAgencyByAmountGreaterThanEqual1000000000.stream().map(o -> new SuspectAgencyDto(new BankDto(o.bank(), o.agency(), null), o.amount(), MovimentTypeDto.valueOf(o.movimentType()))).collect(Collectors.toList());
+
+        model.addAttribute("suspectTransactions", suspectTransactions);
+        model.addAttribute("suspectAccounts", suspectAccountDtos);
+        model.addAttribute("suspectAgencies", suspectAgenciesDtos);
         return "transactions/suspect-transactions";
     }
 
