@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -69,7 +70,7 @@ public class TransactionController {
     @PostMapping("analyse")
     public String analyseSuspectTransactions(@Valid SuspectTransactionForm suspectTransactionForm, Model model, BindingResult result) {
         if (result.hasErrors()) {
-            model.addAttribute("error", result.getFieldError().getDefaultMessage());
+            model.addAttribute("error", Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             return "transactions/suspect-transactions";
         }
 
@@ -97,7 +98,7 @@ public class TransactionController {
     }
 
     private LocalDate getTransactionDate(List<TransactionDto> transactions) {
-        return transactions.get(0).getTransactionDate().toLocalDate();
+        return transactions.get(0).transactionDate().toLocalDate();
     }
 
 }

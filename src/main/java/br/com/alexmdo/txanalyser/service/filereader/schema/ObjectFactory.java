@@ -78,7 +78,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "transacoes")
     public JAXBElement<TransacoesType> createTransacoes(TransacoesType value) {
-        return new JAXBElement<TransacoesType>(_Transacoes_QNAME, TransacoesType.class, null, value);
+        return new JAXBElement<>(_Transacoes_QNAME, TransacoesType.class, null, value);
     }
 
 }

@@ -17,7 +17,6 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Transaction {
 
     @Id

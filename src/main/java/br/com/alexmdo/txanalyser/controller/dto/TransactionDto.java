@@ -10,28 +10,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-public class TransactionDto {
-
-    @NotNull @Valid
-    private final BankDto originBank;
-    @NotNull @Valid
-    private final BankDto destinationBank;
-    @NotNull
-    private final BigDecimal amount;
-    @NotNull
-    private final LocalDateTime transactionDate;
+public record TransactionDto(@NotNull @Valid BankDto originBank, @NotNull @Valid BankDto destinationBank,
+                             @NotNull BigDecimal amount, @NotNull LocalDateTime transactionDate) {
 
     public static List<Transaction> toModel(List<TransactionDto> transactionDtos) {
         return transactionDtos.stream().map(dto -> new Transaction(
                 null,
-                dto.getOriginBank().getBank(),
-                dto.getOriginBank().getAgency(),
-                dto.getOriginBank().getAccount(),
-                dto.getDestinationBank().getBank(),
-                dto.getDestinationBank().getAgency(),
-                dto.getDestinationBank().getAccount(),
-                dto.getAmount(),
+                dto.originBank().bank(),
+                dto.originBank().agency(),
+                dto.originBank().account(),
+                dto.destinationBank().bank(),
+                dto.destinationBank().agency(),
+                dto.destinationBank().account(),
+                dto.amount(),
                 dto.transactionDate,
                 null
         )).collect(Collectors.toList());

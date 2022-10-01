@@ -7,7 +7,6 @@ import br.com.alexmdo.txanalyser.service.filereader.schema.TransacoesType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -4,14 +4,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
-public class BankDto {
-
-    @NotBlank
-    private final String bank;
-    @NotBlank
-    private final String agency;
-    @NotBlank
-    private final String account;
+public record BankDto(@NotBlank String bank, @NotBlank String agency, @NotBlank String account) {
 
 }

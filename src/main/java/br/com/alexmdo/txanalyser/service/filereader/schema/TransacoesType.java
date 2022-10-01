@@ -68,7 +68,7 @@ public class TransacoesType {
      */
     public List<TransacaoType> getTransacao() {
         if (transacao == null) {
-            transacao = new ArrayList<TransacaoType>();
+            transacao = new ArrayList<>();
         }
         return this.transacao;
     }

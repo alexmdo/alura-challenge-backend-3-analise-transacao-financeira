@@ -42,7 +42,7 @@ public class TransactionService {
                 transactionDtos.add(transactionDto);
 
                 if (baseDate == null) {
-                    baseDate = transactionDto.getTransactionDate();
+                    baseDate = transactionDto.transactionDate();
                 }
             }
 
@@ -99,7 +99,7 @@ public class TransactionService {
     }
 
     private boolean isSameDate(LocalDateTime baseDate, TransactionDto transactionDto) {
-        return baseDate == null || transactionDto.getTransactionDate().toLocalDate().isEqual(baseDate.toLocalDate());
+        return baseDate == null || transactionDto.transactionDate().toLocalDate().isEqual(baseDate.toLocalDate());
     }
 
 
