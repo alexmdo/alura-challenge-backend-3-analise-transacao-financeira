@@ -42,7 +42,7 @@ public class TransactionController {
         System.out.println("File length: " + file.getSize() / (1024 * 1024) + " Mb");
 
         try {
-            List<TransactionDto> transactionsDto = transactionService.readFromFileAndValidate(file.getInputStream());
+            List<TransactionDto> transactionsDto = transactionService.readFromFileAndValidate(file);
             List<? extends Transaction> transactions = transactionService.saveAll(TransactionDto.toModel(transactionsDto));
             transactionImportedService.save(new TransactionImported(null, getTransactionDate(transactionsDto), LocalDateTime.now(), (List<Transaction>) transactions, null));
         } catch (IllegalArgumentException e) {
