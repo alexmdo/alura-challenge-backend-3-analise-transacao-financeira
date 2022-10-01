@@ -1,4 +1,4 @@
-package br.com.alexmdo.txanalyser.service.factory;
+package br.com.alexmdo.txanalyser.service.filereader;
 
 import br.com.alexmdo.txanalyser.controller.dto.BankDto;
 import br.com.alexmdo.txanalyser.controller.dto.TransactionDto;

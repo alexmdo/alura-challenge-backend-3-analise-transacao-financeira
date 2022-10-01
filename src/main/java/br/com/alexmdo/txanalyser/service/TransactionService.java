@@ -5,8 +5,8 @@ import br.com.alexmdo.txanalyser.model.Transaction;
 import br.com.alexmdo.txanalyser.model.dto.SuspectAccountDto;
 import br.com.alexmdo.txanalyser.model.dto.SuspectAgencyDto;
 import br.com.alexmdo.txanalyser.repository.TransactionRepository;
-import br.com.alexmdo.txanalyser.service.factory.FileReader;
-import br.com.alexmdo.txanalyser.service.factory.FileReaderFactory;
+import br.com.alexmdo.txanalyser.service.filereader.FileReader;
+import br.com.alexmdo.txanalyser.service.filereader.FileReaderFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
